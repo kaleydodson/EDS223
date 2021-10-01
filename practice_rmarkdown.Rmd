@@ -1,0 +1,105 @@
+---
+title: "Practice Markdown"
+author: "Wylie Hampson"
+date: "9/30/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(sf)
+library(spData)
+library(tmap)
+library(sp)
+library(rnaturalearth)
+library(rnaturalearthdata)
+```
+
+### Most of the following steps are copied from ["tmap: Get Started!"](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html)
+
+
+```{r}
+data("World")
+
+tmap_mode("view")
+
+tm_shape(World) +
+  tm_polygons("HPI")
+```
+
+```{r}
+sp::plot(ne_countries(type = 'countries', scale = 'small'))
+sp::plot(ne_countries(country = 'united kingdom', type='map_units', scale = 'medium'))
+sp::plot(ne_coastline(scale = 'medium'))
+```
+
+```{r}
+data(World, metro, rivers, land)
+
+tmap_mode("view")
+
+tm_shape(land) +
+  tm_raster("elevation", palette = terrain.colors(10)) +
+tm_shape(World) +
+  tm_borders("white", lwd = .5) +
+  tm_text("iso_a3", size = "AREA") +
+tm_shape(metro) +
+  tm_symbols(col = "red", size = "pop2020", scale = .5) +
+tm_legend(show = FALSE)  
+```
+
+```{r}
+tmap_mode("view")
+tm_shape(World) +
+  tm_polygons(c("HPI", "economy")) +
+  tm_facets(sync = TRUE, ncol = 2)
+```
+
+```{r}
+tmap_mode("plot")
+
+data(NLD_muni)
+
+NLD_muni$perc_men <- NLD_muni$pop_men / NLD_muni$population * 100
+
+tm_shape(NLD_muni) +
+  tm_polygons("perc_men", palette = "RdYlBu") +
+  tm_facets(by = "province")
+```
+
+```{r}
+tmap_mode("plot")
+
+data(NLD_muni)
+
+tm1 <- tm_shape(NLD_muni) + tm_polygons("population", convert2density = TRUE)
+tm2 <- tm_shape(NLD_muni) + tm_bubbles(size = "population")
+
+tmap_arrange(tm1, tm2)
+```
+
+```{r}
+tmap_mode("view")
+
+tm_basemap("Stamen.Watercolor") +
+tm_shape(metro) + tm_bubbles(size = "pop2020", col = "red") +
+tm_tiles("stamen.TonerLabels")
+```
+
+## Here's where I started trying things for myself and I think I'm starting to get somewhere with it.
+I think this is how to plot rnaturalearth data with tmap. You need to give tmap data to use, so you set the rnaturalearth as an object, then put that within the data() function. After that, most of the tmap tools should work in the same way.
+
+```{r}
+my_map_data <- ne_countries(scale='medium',returnclass = 'sf')
+
+data(my_map_data)
+
+tmap_mode("plot")
+tm_shape(ne_states(country = 'Mexico')) +
+  tm_borders()
+
+```
+
+
+
+
