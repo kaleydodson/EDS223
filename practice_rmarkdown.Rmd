@@ -104,7 +104,13 @@ tm_shape(ne_states(geounit = 'england')) +
 ```
 
 ```{r}
-data(package = "rnaturalearthdata")
+tmap_mode("plot")
+
+tm_shape(us_states) +
+  tm_polygons() +
+tm_shape(spDataLarge::elevation) +
+  tm_raster() +
+
 ```
 
 
