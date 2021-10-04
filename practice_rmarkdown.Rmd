@@ -90,16 +90,22 @@ tm_tiles("stamen.TonerLabels")
 I think this is how to plot rnaturalearth data with tmap. You need to give tmap data to use, so you set the rnaturalearth as an object, then put that within the data() function. After that, most of the tmap tools should work in the same way.
 
 ```{r}
-my_map_data <- ne_countries(scale='medium',returnclass = 'sf')
+my_map_data <- ne_countries(country = 'United States of America')
 
 data(my_map_data)
 
+tmap_options(check.and.fix = TRUE)
+
 tmap_mode("plot")
-tm_shape(ne_states(country = 'Mexico')) +
+tm_shape(ne_states(geounit = 'england')) +
   tm_borders()
+
 
 ```
 
+```{r}
+data(package = "rnaturalearthdata")
+```
 
 
 
