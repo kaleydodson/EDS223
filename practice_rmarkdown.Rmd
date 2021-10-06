@@ -104,14 +104,41 @@ tm_shape(ne_states(geounit = 'england')) +
 ```
 
 ```{r}
-tmap_mode("plot")
+tmap_mode("view")
 
 tm_shape(us_states) +
   tm_polygons() +
 tm_shape(spDataLarge::elevation) +
-  tm_raster() +
+  tm_raster()
+```
+
+```{r}
+tmap_mode("plot")
+
+map_canada <- tm_shape(ne_states(country = "Canada")) +
+  tm_polygons() 
+
+map_canada
+```
+```{r}
+tmap_mode("plot")
+
+tm_shape(world) +
+  tm_polygons("lifeExp", palette = "Greens") +
+  tm_layout(bg.color = "Cyan") +
+  tm_shape(metro) +
+    tm_bubbles("pop2020", col = "blue", border.col = "white",
+               alpha = .3)
+
 
 ```
 
+```{r}
+tmap_mode("plot")
 
+tm_shape(ne_states(country = "United States of America")) +
+  tm_polygons() +
+tm_shape(alaska) +
+  tm_polygons(col = "blue")
+```
 
